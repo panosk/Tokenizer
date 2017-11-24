@@ -130,7 +130,7 @@ namespace onmt
                                                      char_size);
 
         code_points.push_back(code_point);
-        chars.emplace_back(str.substr(offset, offset+char_size));
+        chars.emplace_back(str.substr(offset, char_size));
         offset += char_size;
       }
     }

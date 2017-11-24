@@ -117,7 +117,7 @@ namespace onmt
       return fragments;
     }
 
-    void explode_utf8(std::string str,
+    void explode_utf8(const std::string &str,
                       std::vector<std::string>& chars,
                       std::vector<code_point_t>& code_points)
     {
@@ -126,12 +126,12 @@ namespace onmt
       while (offset < str.length())
       {
         unsigned int char_size = 0;
-        code_point_t code_point = utf8_to_cp(reinterpret_cast<const unsigned char*>(str.c_str()),
+        code_point_t code_point = utf8_to_cp(reinterpret_cast<const unsigned char*>(str.c_str()+offset),
                                                      char_size);
 
         code_points.push_back(code_point);
-        chars.emplace_back(str.substr(0, char_size));
-        str.erase(0, char_size);
+        chars.emplace_back(str.substr(offset, offset+char_size));
+        offset += char_size;
       }
     }
 

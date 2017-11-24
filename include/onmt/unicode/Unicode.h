@@ -19,7 +19,7 @@ namespace onmt
     code_point_t utf8_to_cp(const unsigned char* s, unsigned int &l);
 
     std::vector<std::string> split_utf8(const std::string& str, const std::string& sep);
-    void explode_utf8(std::string str,
+    void explode_utf8(const std::string &str,
                       std::vector<std::string>& chars,
                       std::vector<code_point_t>& code_points);
 

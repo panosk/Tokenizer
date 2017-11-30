@@ -157,7 +157,7 @@ namespace onmt
 
       for (size_t i = 0; i < chars.size(); ++i)
       {
-        std::string c = chars[i];
+        std::string &c = chars[i];
         unicode::code_point_t v = code_points[i];
         unicode::code_point_t next_v = i + 1 < code_points.size() ? code_points[i + 1] : 0;
         bool isSeparator = unicode::is_separator(v);
@@ -179,16 +179,19 @@ namespace onmt
             }
           }
           else if (c == ph_marker_open) {
-            std::string initc;
+            bool initc = false;
             if (!space) {
               if (_joiner_annotate && !_joiner_new) {
                 if ((letter && prev_alphabet != "placeholder") || number)
-                  initc = _joiner;
+                  initc = true;
                 else
                   token += _joiner;
               }
               words.push_back(token);
-              token = initc;
+              if (initc)
+                token = _joiner;
+              else
+                token.clear();
               if (_joiner_annotate && _joiner_new)
                 words.push_back(_joiner);
             } else if (other) {
@@ -389,10 +392,9 @@ namespace onmt
           auto data = CaseModifier::extract_case(words[i]);
           words[i] = data.first;
           case_feat.emplace_back(1, data.second);
-        } else
-        {
-          case_feat.emplace_back(1, 'N');
         }
+        else
+          case_feat.emplace_back(1, 'N');
       }
 
       features.push_back(case_feat);

@@ -1,11 +1,18 @@
 #pragma once
 
-#include "onmt/unicode/Unicode.h"
+#include <map>
+#include <unordered_map>
+#include <vector>
+#include <cstdint>
 
 namespace onmt
 {
   namespace unicode
   {
+
+    typedef uint32_t code_point_t;
+    typedef std::map<code_point_t, std::vector<code_point_t> > map_of_list_t;
+    typedef std::unordered_map<code_point_t, code_point_t> map_unicode;
 
     extern const map_of_list_t unidata_Number;
     extern const map_of_list_t unidata_LetterUpper;

@@ -1,5 +1,4 @@
 #include "onmt/unicode/Unicode.h"
-#include "onmt/unicode/Data.h"
 
 namespace onmt
 {
@@ -135,8 +134,9 @@ namespace onmt
       }
     }
 
-    static bool _find_codepoint(code_point_t u, const map_of_list_t &map)
+    bool _find_codepoint(code_point_t u, const map_of_list_t &map)
     {
+      if (!u) return false;
       map_of_list_t::const_iterator it = map.begin();
 
       while (it != map.end())
@@ -155,57 +155,6 @@ namespace onmt
       }
 
       return 0;
-    }
-
-    bool is_separator(code_point_t u)
-    {
-      if (!u)
-        return false;
-      return (u >= 9 and u <= 13) or _find_codepoint(u, unidata_Separator);
-    }
-
-    bool is_letter(code_point_t u, _type_letter &tl)
-    {
-      if (!u)
-        return false;
-      // unicode letter or CJK Unified Ideograph
-      if ((u>=0x4E00 && u<=0x9FD5) // CJK Unified Ideograph
-          || (u>=0x2F00 && u<=0x2FD5) // Kangxi Radicals
-          || (u>=0x2E80 && u<=0x2EFF) // CJK Radicals Supplement
-          || (u>=0x3040 && u<=0x319F) // Hiragana, Katakana, Bopomofo, Hangul Compatibility Jamo, Kanbun
-          || (u>=0x1100 && u<=0x11FF) // Hangul Jamo
-          || (u>=0xAC00 && u<=0xD7AF) // Hangul Syllables
-          || _find_codepoint(u, unidata_LetterOther))
-      {
-        tl = _letter_other;
-        return 1;
-      }
-      if (_find_codepoint(u, unidata_LetterLower))
-      {
-        tl = _letter_lower;
-        return 1;
-      }
-      if (_find_codepoint(u, unidata_LetterUpper))
-      {
-        tl = _letter_upper;
-        return 1;
-      }
-
-      return 0;
-    }
-
-    bool is_number(code_point_t u)
-    {
-      if (!u)
-        return false;
-      return _find_codepoint(u, unidata_Number);
-    }
-
-    bool is_mark(code_point_t u)
-    {
-      if (!u)
-        return false;
-      return _find_codepoint(u, unidata_Mark);
     }
 
     // convert unicode character to lowercase form if defined in unicodedata

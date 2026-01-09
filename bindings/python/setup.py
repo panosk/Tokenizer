@@ -60,6 +60,21 @@ if sys.platform == "darwin":
 
         # rpath for runtime
         ldflags.append("-Wl,-rpath,@loader_path/../icu/lib")
+        
+    tokenizer_root = os.environ.get("TOKENIZER_ROOT")
+    if tokenizer_root:
+        tokenizer_lib_dir = os.path.join(tokenizer_root, "lib")
+        tokenizer_lib = os.path.join(
+            tokenizer_lib_dir, "libOpenNMTTokenizer.dylib"
+        )
+
+        if os.path.isfile(tokenizer_lib):
+            # Absolute path so delocate can find it
+            ldflags.append(tokenizer_lib)
+
+            # Runtime rpath inside the wheel
+            ldflags.append("-Wl,-rpath,@loader_path/../lib")
+
 
 elif sys.platform == "win32":
     cflags = ["/std:c++17", "/d2FH4-"]

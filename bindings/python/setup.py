@@ -7,7 +7,7 @@ from setuptools import Extension, find_packages, setup
 
 include_dirs = [pybind11.get_include()]
 library_dirs = []
-libraries = ["OpenNMTTokenizer"]
+libraries = []
 
 
 def _get_long_description():
@@ -77,6 +77,7 @@ if sys.platform == "darwin":
 
 
 elif sys.platform == "win32":
+    libraries.append("OpenNMTTokenizer")
     cflags = ["/std:c++17", "/d2FH4-"]
     package_data["pyonmttok"] = ["*.dll"]
 

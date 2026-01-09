@@ -73,7 +73,7 @@ if sys.platform == "darwin":
             ldflags.append(tokenizer_lib)
 
             # Runtime rpath inside the wheel
-            ldflags.append("-Wl,-rpath,@loader_path/../lib")
+            ldflags.append("-Wl,-rpath,@loader_path")
 
 
 elif sys.platform == "win32":

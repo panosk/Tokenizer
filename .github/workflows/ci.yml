@@ -44,8 +44,17 @@ jobs:
             -DICU_ROOT=$ICU_PREFIX \
             .
           make -j2 install
-          install_name_tool -id $PWD/install/lib/libOpenNMTTokenizer.dylib \
-                   $PWD/install/lib/libOpenNMTTokenizer.dylib
+          
+      - name: Fix tokenizer dylib install_name
+        if: runner.os == 'macOS'
+        run: |
+          TOKENIZER_LIB=$PWD/install/lib/libOpenNMTTokenizer.dylib
+          echo "Before install_name fix:"
+          otool -D "$TOKENIZER_LIB"
+          install_name_tool -id "$TOKENIZER_LIB" "$TOKENIZER_LIB"
+          echo "After install_name fix:"
+          otool -D "$TOKENIZER_LIB"
+
 
 
       - name: Run C++ tests

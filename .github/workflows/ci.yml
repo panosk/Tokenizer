@@ -44,6 +44,9 @@ jobs:
             -DICU_ROOT=$ICU_PREFIX \
             .
           make -j2 install
+          install_name_tool -id $PWD/install/lib/libOpenNMTTokenizer.dylib \
+                   $PWD/install/lib/libOpenNMTTokenizer.dylib
+
 
       - name: Run C++ tests
         run: test/onmt_tokenizer_test test/data

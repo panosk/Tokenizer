@@ -156,6 +156,9 @@ jobs:
             DYLD_LIBRARY_PATH=${GITHUB_WORKSPACE}/icu/lib:${DYLD_LIBRARY_PATH}
           CIBW_REPAIR_WHEEL_COMMAND_MACOS: |
             set -e
+            echo "=== Adding tokenizer dylib explicitly ==="
+            delocate-add-dylib $TOKENIZER_ROOT/lib/libOpenNMTTokenizer.dylib {wheel}
+            
             echo "=== Bundling ICU into wheel ==="
             delocate-wheel -v -w {dest_dir} {wheel}
             
